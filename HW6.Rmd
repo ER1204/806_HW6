@@ -1,6 +1,6 @@
 ---
 title: "HW6"
-author: "Erin Reilly"
+author: "Erin Reilly, Santiago Rivera Reyes, Patrick Lemis"
 date: "2023-10-05"
 output: html_document
 ---
