@@ -1,0 +1,119 @@
+---
+title: "HW6"
+author: "Erin Reilly"
+date: "2023-10-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Mid-Semester Assignment - HW5
+Your task on this assignment is to work in a small group (2-3 people) to address the following questions. Only
+one writeup (as a .Rmd and .pdf) needs to be submitted for each group. The problems below use several
+different datasets. Your document should include code, figures, and written answers to each question.
+
+
+```{r}
+#Load libraries
+library(tidyverse)
+
+```
+
+## 1 - Fisheries Example
+
+The code below includes the Canadian Atlantic cod population (in tonnes) over time. Build a plot of this
+data and explain in writing what has happened to the population.
+
+```{r}
+#Load data
+cod_pop <- c(1450, 1420, 1050, 2643, 1060, 1080, 1410, 1150, 740, 175, 43, 10, 12,
+15, 16, 16, 28, 30, 32, 23, 12, 19, 27)
+years <- c(1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994,
+1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005)
+
+#Build plot
+
+
+```
+
+
+## 2-3 Population Models
+
+The discrete-time logistic growth model has the form N [t] + r ∗ N [t] ∗ (1 − N [t]/K). It is often used to describe population growth, such as in animal and plant populations, cancer tumor growth, and bacterial growth. 
+
+Your task is to write a for loop that runs this model from time = 1 to time = 50. The starting value of N is 0.1. The default parameter values are r = 0.4 and K = 1. 
+
+What is the behavior (e.g., does the population go extinct? are there cycles?) with the default parameter values? 
+
+What happens if you increase r? 
+
+Please provide graphs to support your conclusions.
+
+```{r}
+# Model: N[t] + r * N[t] * (1-N[t]/K)
+
+t<-1:50
+N<-0.1
+r<-0.4
+K<-1
+output<-vector(mode = "numeric", length = length(t))
+
+for (i in t){
+  model<-N[t] + r * N[t] * (1-N[t]/K)
+  print(model)
+  output[i] <- model
+}
+
+
+```
+
+## 4 Measles data in the UK
+
+On Canvas (https://mycourses.unh.edu/courses/88910/files/6917786?module_item_id=2094185), I’ve up- loaded historical data on total measles cases and deaths for Wales and the UK. Load the data into R and build figures. Use the data to explain as much as possible about what is happening with the dynamics of measles.
+
+```{r}
+
+
+
+```
+
+## 5-7
+
+The code below implements a Wright-Fisher model with genetic drift and mutation. Use and modify the code to create plots and answer the following questions:
+
+1. What is the effect of population size (N) on the probability of extinction of A allele?
+
+2. How does the initial frequency of the A allele affect the probability it will reach fixation?
+
+3. Let’s now study the combined effects of mutation and genetic
+drift. Modify the above code (specifically the sample.population() function) to include a probability, u, that if a small “a” allele is chosen, it will mutate to be a big A allele. An if/else statement and or the command rbinom() might be helpful. How does this affect our findings in questions 1 and 2?
+
+```{r}
+# Part 1: Wright-Fisher model with genetic drift and mutation
+# Created by Easton R. White
+# Last edited: 4-Oct-2021
+# Setting up parameter values
+N = 1000 # population size
+p_ini = 0.1 # the initial frequency of the A allele
+u = 0.1 # mutation rate from a to A
+max.time = 100 # time to run simulations
+# Custom built function
+sample.population <- function(p, N) {
+next_pop = vector("character", length = N)
+for (i in 1:N) {
+new_allele = sample(x = c("A", "a"), size = 1, prob = c(p, 1 - p))
+next_pop[i] = as.character(new_allele)
+}
+return(sum(next_pop == "A")/N) # returns the value for p
+}
+p = vector(mode = "numeric", length = max.time)
+p[1] = p_ini
+for (t in 1:(max.time - 1)) {
+p[t + 1] = sample.population(p[t], N)
+}
+plot(1:max.time, p, ylim = c(0, 1), type = "l", las = 1, ylab = "Freq(A)", xlab = "Time")
+
+```
+
