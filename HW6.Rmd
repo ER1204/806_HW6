@@ -45,29 +45,55 @@ The discrete-time logistic growth model has the form N [t] + r ∗ N [t] ∗ (1 
 
 Your task is to write a for loop that runs this model from time = 1 to time = 50. The starting value of N is 0.1. The default parameter values are r = 0.4 and K = 1. 
 
-What is the behavior (e.g., does the population go extinct? are there cycles?) with the default parameter values? 
-
-What happens if you increase r? 
-
-Please provide graphs to support your conclusions.
-
 ```{r}
-# Model: N[t] + r * N[t] * (1-N[t]/K)
+#Define parameters
+r <- 0.4
+t <- 50
+K <-1
 
-t<-1:50
-N<-0.1
-r<-0.4
-K<-1
-output<-vector(mode = "numeric", length = length(t))
+#Create vector
+N <- vector(length = length(t)) #storing population data
+N[1] <- 0.1 #when t = 1
 
-for (i in t){
-  model<-N[t] + r * N[t] * (1-N[t]/K)
-  print(model)
-  output[i] <- model
+#Create loop
+for(i in 1:t){
+  N[i+1] <- N[i] + r * N[i] * (1-N[i]/K) #for some reason you NEED the [i+1] which I thought was exponential growth exclusive
 }
 
-
 ```
+
+What is the behavior (e.g., does the population go extinct? are there cycles?) with the default parameter values? 
+
+The population increases logistically to the carrying capacity. This is reached around time point 18. 
+```{r}
+#Plot
+plot(N) 
+```
+
+
+What happens if you increase r? 
+ 
+```{r}
+#Define parameters
+r2 <- 0.89
+t2 <- 50
+K2 <-1
+
+#Create vector
+N2 <- vector(length = length(t2)) #storing population data
+N2[1] <- 0.1 #when t = 1
+
+#Create loop
+for(i in 1:t2){
+  N2[i+1] <- N2[i] + r2 * N2[i] * (1-N2[i]/K2) #for some reason you NEED the [i+1] which I thought was exponential growth exclusive
+}
+#Plot
+plot(N2) 
+```
+
+Increasing the r value increases the rate at which the carrying capacity is reach. For example, an r value of 0.89 causes carrying capacity to be reached around time point 8.
+
+Graphs are provided to support conclusions.
 
 ## 4 Measles data in the UK
 
