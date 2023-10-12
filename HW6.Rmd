@@ -110,36 +110,166 @@ On Canvas (https://mycourses.unh.edu/courses/88910/files/6917786?module_item_id=
 The code below implements a Wright-Fisher model with genetic drift and mutation. Use and modify the code to create plots and answer the following questions:
 
 1. What is the effect of population size (N) on the probability of extinction of A allele?
+Answer: 
+As we can see on the code below, smaller populations have a higher probability of extinction of the A allele while the opposite is true for larger populations which are less susceptible to extinction as they have more stable allele frequencies. 
+
+Code:
+```{r}
+N_values <- c(100, 500, 1000)  # Vary population size
+p_ini <- 0.1  # Initial frequency of the A allele
+u <- 0.1  # Mutation rate
+
+max.time <- 100  # Time to run simulations
+
+sample.population <- function(p, N, u) {
+  next_pop <- vector("character", length = N)
+  for (i in 1:N) {
+    if (sample(x = c("A", "a"), size = 1, prob = c(p, 1 - p)) == "a") {
+      # Check for mutation with probability u
+      mutate <- rbinom(1, size = 1, prob = u)
+      if (mutate == 1) {
+        new_allele <- "A"
+      } else {
+        new_allele <- "a"
+      }
+    } else {
+      new_allele <- "A"
+    }
+    next_pop[i] <- new_allele
+  }
+  return(sum(next_pop == "A") / N)  # Returns the value for p
+}
+results <- list()
+
+# Question 1: Effect of population size on probability of extinction
+for (N in N_values) {
+  p <- numeric(max.time)
+  p[1] <- p_ini
+  for (t in 1:(max.time - 1)) {
+    p[t + 1] <- sample.population(p[t], N, u = 0)
+  }
+  results[[paste("N", N, sep = "_")]] <- p
+}
+
+par(mfrow = c(1, length(N_values)))
+for (i in 1:length(N_values)) {
+  plot(1:max.time, results[[i]], ylim = c(0, 1), type = "l", las = 1,
+       ylab = "Freq(A)", xlab = "Time", main = paste("N =", N_values[i]))
+}
+```
 
 2. How does the initial frequency of the A allele affect the probability it will reach fixation?
 
+Answer: 
+According to the code below, we can see that if the initial frequency of allele A is low it has a smaller probability of reaching fixation as it starts with little representation in the population. The opposite is true when the initial frequency is high as a bigger representation in the population translates into a higher chance of fixation.
+
+Code: 
+```{r}
+# Set up parameter values
+N <- 1000  # Population size
+p_ini_values <- seq(0.1, 0.9, by = 0.1)  # Vary initial frequency of A allele
+u <- 0.1  # Mutation rate
+
+max.time <- 100  # Time to run simulations
+
+# Custom built function with mutation (u)
+sample.population <- function(p, N, u) {
+  next_pop <- vector("character", length = N)
+  for (i in 1:N) {
+    if (sample(x = c("A", "a"), size = 1, prob = c(p, 1 - p)) == "a") {
+      # Check for mutation with probability u
+      mutate <- rbinom(1, size = 1, prob = u)
+      if (mutate == 1) {
+        new_allele <- "A"
+      } else {
+        new_allele <- "a"
+      }
+    } else {
+      new_allele <- "A"
+    }
+    next_pop[i] <- new_allele
+  }
+  return(sum(next_pop == "A") / N)  # Returns the value for p
+}
+
+# Initialize a list to store results
+results <- list()
+# Question 2: Effect of initial frequency on probability of fixation
+for (p_ini in p_ini_values) {
+  p <- numeric(max.time)
+  p[1] <- p_ini
+  for (t in 1:(max.time - 1)) {
+    p[t + 1] <- sample.population(p[t], N, u = 0)
+  }
+  results[[paste("p_ini", p_ini, sep = "_")]] <- p
+}
+
+
+options(repr.plot.width = 10, repr.plot.height = 6)  
+
+
+for (i in 1:length(p_ini_values)) {
+  
+  par(mfrow = c(1, 1))  
+  
+  par(mar = c(4, 4, 2, 2))  
+  
+  plot(1:max.time, results[[i]], ylim = c(0, 1), type = "l", las = 1,
+       ylab = "Freq(A)", xlab = "Time", main = paste("p_ini =", p_ini_values[i]))
+}
+```
 3. Let’s now study the combined effects of mutation and genetic
 drift. Modify the above code (specifically the sample.population() function) to include a probability, u, that if a small “a” allele is chosen, it will mutate to be a big A allele. An if/else statement and or the command rbinom() might be helpful. How does this affect our findings in questions 1 and 2?
 
+Answer: 
+if mutation (u) is high, it introduces new alleles and therefore it can reduce the effect of extinction, similarly higher mutation rates can slow down the fixation process as there is more diversity in the population.
+
+
+Code:
+
 ```{r}
-# Part 1: Wright-Fisher model with genetic drift and mutation
-# Created by Easton R. White
-# Last edited: 4-Oct-2021
-# Setting up parameter values
-N = 1000 # population size
-p_ini = 0.1 # the initial frequency of the A allele
-u = 0.1 # mutation rate from a to A
-max.time = 100 # time to run simulations
-# Custom built function
-sample.population <- function(p, N) {
-next_pop = vector("character", length = N)
-for (i in 1:N) {
-new_allele = sample(x = c("A", "a"), size = 1, prob = c(p, 1 - p))
-next_pop[i] = as.character(new_allele)
+N <- 1000  # Population size
+p_ini <- 0.1  # Initial frequency of the A allele
+u_values <- c(0, 0.1, 0.5)  # Vary mutation rate
+
+max.time <- 100  # Time to run simulations
+
+sample.population <- function(p, N, u) {
+  next_pop <- vector("character", length = N)
+  for (i in 1:N) {
+    if (sample(x = c("A", "a"), size = 1, prob = c(p, 1 - p)) == "a") {
+      # Check for mutation with probability u
+      mutate <- rbinom(1, size = 1, prob = u)
+      if (mutate == 1) {
+        new_allele <- "A"
+      } else {
+        new_allele <- "a"
+      }
+    } else {
+      new_allele <- "A"
+    }
+    next_pop[i] <- new_allele
+  }
+  return(sum(next_pop == "A") / N)  # Returns the value for p
 }
-return(sum(next_pop == "A")/N) # returns the value for p
+
+results <- list()
+
+# Question 3: Effect of mutation rate on probability of extinction and stability
+for (u in u_values) {
+  p <- numeric(max.time)
+  p[1] <- p_ini
+  for (t in 1:(max.time - 1)) {
+    p[t + 1] <- sample.population(p[t], N, u)
+  }
+  results[[paste("u", u, sep = "_")]] <- p
 }
-p = vector(mode = "numeric", length = max.time)
-p[1] = p_ini
-for (t in 1:(max.time - 1)) {
-p[t + 1] = sample.population(p[t], N)
+
+par(mfrow = c(1, length(u_values)))
+for (i in 1:length(u_values)) {
+  plot(1:max.time, results[[i]], ylim = c(0, 1), type = "l", las = 1,
+       ylab = "Freq(A)", xlab = "Time", main = paste("u =", u_values[i]))
 }
-plot(1:max.time, p, ylim = c(0, 1), type = "l", las = 1, ylab = "Freq(A)", xlab = "Time")
 
 ```
 
