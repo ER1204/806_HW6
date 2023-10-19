@@ -21,23 +21,26 @@ library(tidyverse)
 
 ```
 
-## 1 - Fisheries Example
+## 1. Fisheries example
 
-The code below includes the Canadian Atlantic cod population (in tonnes) over time. Build a plot of this
-data and explain in writing what has happened to the population.
+The code below includes the Canadian Atlantic cod population (in tonnes) over time. Build a plot of this data and explain in writing what has happened to the population. 
 
-```{r}
-#Load data
-cod_pop <- c(1450, 1420, 1050, 2643, 1060, 1080, 1410, 1150, 740, 175, 43, 10, 12,
-15, 16, 16, 28, 30, 32, 23, 12, 19, 27)
-years <- c(1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994,
-1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005)
+ANSWER: The cod population was operating at a stable level until the early 1990s when there was a stark decrease in population size. Due to this abrupt decrease it seems as though the cod have been unable to bounce back to a stable populations, thus maintaining the low popuation throughout the early 2000s.
 
-#Build plot
+```{r cod_pop,echo=T,eval=T, tidy=TRUE}
+cod_pop <- c(1450, 1420, 1050, 2643, 1060, 1080, 1410, 1150, 740, 175, 43, 10, 12, 15, 16, 16, 28, 30, 32, 23, 12, 19, 27)
+years <- c(1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 
+1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 
+2004, 2005)
 
+typeof(cod_year)
 
+cod_year <- data.frame(cod_pop,years)
+
+library(tidyverse)
+nrow(cod_year)
+ggplot(data = cod_year, aes(x = years, y = cod_pop)) + geom_point()
 ```
-
 
 ## 2-3 Population Models
 
