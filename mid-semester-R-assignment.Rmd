@@ -53,7 +53,7 @@ The discrete-time logistic growth model has the form $N[t] + r*N[t]*(1 - N[t]/K)
 
 On Canvas (https://mycourses.unh.edu/courses/88910/files/6917786?module_item_id=2094185), I've uploaded historical data on total measles cases and deaths for Wales and the UK. Load the data into R and build figures. Use the data to explain as much as possible about what is happening with the dynamics of measles. 
 
-The dynamics of measles within Wales and the UK initially started off with high rates of infections as well as deaths. Additionally it seems like the infection rates were various in the initial year of infection, before the vaccine was released in 1963. After which the graph shows the the data gets less variable as cases and deaths decreased, evening out in the early 1990s. This could also show that the vaccine was highly effective especially over long periods of time as even the most recent data (2020) has little to no infections and deaths.
+ANSWER: The dynamics of measles within Wales and the UK initially started off with high rates of infections as well as deaths. Additionally it seems like the infection rates were various in the initial year of infection, before the vaccine was released in 1963. After which the graph shows the the data gets less variable as cases and deaths decreased, evening out in the early 1990s. This could also show that the vaccine was highly effective especially over long periods of time as even the most recent data (2020) has little to no infections and deaths.
 
 ```{r}
 library(ggplot2)
